@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Angular + Material as TO-DO</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" type="text/css" media="screen" href="lib/googleapis/fonts/roboto.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+    <link rel="stylesheet" type="text/css" media="screen" href="lib/googleapis/angular_material-1.1.0/angular-material.css">
+    <link rel="stylesheet" type="text/css" media="screen" href="css/main.css">
+</head>
+<body ng-app="app">
+    <md-toolbar class="md-hue-2">
+        <div layout="row">
+            <md-toolbar-filler layout="row" layout-align="right">
+                <md-icon>apps</md-icon>
+                <h2 class="md-toolbar-tools">
+                    <span>Tasks</span>
+                </h2>
+                <input class="search-input" placeholder="Pesquisar">
+            </md-toolbar-filler>
+        </div>
+    </md-toolbar>
+
+    <!-- Angular Material requires Angular.js Libraries -->
+    <script src="lib/googleapis/angularjs-1.5.5/angular.js"></script>
+    <script src="lib/googleapis/angularjs-1.5.5/angular-animate.js"></script>
+    <script src="lib/googleapis/angularjs-1.5.5/angular-aria.js"></script>
+    <script src="lib/googleapis/angularjs-1.5.5/angular-messages.js"></script>
+    <!-- Angular Material Library -->
+    <script src="lib/googleapis/angular_material-1.1.0/angular-material.js"></script>
+    <!-- Application Libraries -->
+    <script src="js/main.js"></script>
+</body>
+</html>

@@ -1,0 +1,13 @@
+.search-input {
+    margin-top: 8px;
+    margin-left: 100px;
+    height: 65%;
+    border-style: none;
+    border-radius: 2px;
+    padding: 8px;
+    font-size: 10pt;
+    text-indent: 25px;
+    background-image: url('../assets/search-18.png');
+    background-repeat: no-repeat;
+    background-position: 4px;
+}
