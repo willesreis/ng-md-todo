@@ -1,7 +1,8 @@
 package org.wsr.ngmdtodo.domain
 
-class Step {
+class List {
     Integer id
-    boolean checked
+    String icon
     String description
+    ArrayList tasks = []
 }

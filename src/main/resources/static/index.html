@@ -10,7 +10,7 @@
     <link rel="stylesheet" type="text/css" media="screen" href="lib/googleapis/angular_material-1.1.0/angular-material.css">
     <link rel="stylesheet" type="text/css" media="screen" href="css/main.css">
 </head>
-<body ng-app="app">
+<body ng-app="app" ng-controller="TaskController">
     <md-toolbar class="md-hue-2">
         <div layout="row">
             <md-toolbar-filler layout="row" layout-align="right">
@@ -19,18 +19,24 @@
                     <span>Tasks</span>
                 </h2>
                 <input class="search-input" placeholder="Pesquisar">
+                <md-button ng-click="list()">Get Tasks</md-button>
             </md-toolbar-filler>
         </div>
     </md-toolbar>
+    <md-list-item ng-repeat="t in tasks">
+        <md-checkbox ng-value="t.id" ng-model="t.checked" ng-click="alert(t)"></md-checkbox>
+        <p ng-class="{'line-through' : t.checked}">{{t.description}}</p>
+    </md-list-item>
 
     <!-- Angular Material requires Angular.js Libraries -->
-    <script src="lib/googleapis/angularjs-1.5.5/angular.js"></script>
-    <script src="lib/googleapis/angularjs-1.5.5/angular-animate.js"></script>
-    <script src="lib/googleapis/angularjs-1.5.5/angular-aria.js"></script>
-    <script src="lib/googleapis/angularjs-1.5.5/angular-messages.js"></script>
+    <script type="text/javascript" src="lib/googleapis/angularjs-1.5.5/angular.js"></script>
+    <script type="text/javascript" src="lib/googleapis/angularjs-1.5.5/angular-animate.js"></script>
+    <script type="text/javascript" src="lib/googleapis/angularjs-1.5.5/angular-aria.js"></script>
+    <script type="text/javascript" src="lib/googleapis/angularjs-1.5.5/angular-messages.js"></script>
     <!-- Angular Material Library -->
-    <script src="lib/googleapis/angular_material-1.1.0/angular-material.js"></script>
+    <script type="text/javascript" src="lib/googleapis/angular_material-1.1.0/angular-material.js"></script>
     <!-- Application Libraries -->
-    <script src="js/main.js"></script>
+    <script type="text/javascript" src="js/main.js"></script>
+    <script type="text/javascript" src="js/task/TaskController.js"></script>
 </body>
 </html>

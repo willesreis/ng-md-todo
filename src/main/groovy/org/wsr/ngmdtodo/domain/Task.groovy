@@ -1,9 +1,8 @@
-import org.springframework.stereotype.Component
+package org.wsr.ngmdtodo.domain
 
-@Component
 class Task {
     Integer id
     boolean checked
     String description
-    List<Step> steps
+    ArrayList steps = []
 }
