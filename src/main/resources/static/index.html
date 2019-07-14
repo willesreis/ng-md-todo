@@ -12,38 +12,44 @@
 </head>
 <body ng-app="app" ng-controller="TaskController" ng-cloak="">
     <md-toolbar>
-        <div layout="row">
-            <md-toolbar-filler layout="row" layout-align="stretch">
-                <section layout="column" layout-align="center center">
-                    <md-button class="md-icon-button" title="Inicializador de aplicativos" aria-label="Inicializador de aplicativos" ng-click="window.alert('as soon');">
-                        <md-icon>apps</md-icon>
-                    </md-button>
-                </section>
-                <h2 class="md-toolbar-tools">
-                    <span>To-Do</span>
-                </h2>
-                <input class="search-input" placeholder="Pesquisar" size="40">
-                <section layout="column" layout-align="center center">
+        <div layout="row" layout-align="space-between center">
+            <div layout="row" flex="none">
+                <div layout="row" layout-align="start center">
+                    <section>
+                        <md-button class="md-icon-button" title="Inicializador de aplicativos" aria-label="Inicializador de aplicativos" ng-click="window.alert('as soon');">
+                            <md-icon>apps</md-icon>
+                        </md-button>
+                    </section>
+                    <h2 class="md-toolbar-tools">
+                        <span>To-Do</span>
+                    </h2>
+                </div>
+            </div>
+            <div layout="row" layout-align="center" flex="">
+                <input class="search-input" placeholder="Pesquisar">
+            </div>
+            <div layout="row" layout-align="center" flex="none">
+                <section>
                     <md-button class="md-icon-button" title="Configurações" aria-label="Configurações">
                         <md-icon>settings</md-icon>
                     </md-button>
                 </section>
-                <section layout="column" layout-align="center center">
+                <section>
                     <md-button class="md-icon-button" title="Ajuda e comentários" aria-label="Ajuda e comentários">
                         <md-icon>help</md-icon>
                     </md-button>
                 </section>
-                <section layout="column" layout-align="center center">
+                <section>
                     <md-button class="md-icon-button" title="Novidades" aria-label="Novidades">
                         <md-icon>info</md-icon>
                     </md-button>
                 </section>
-                <section layout="column" layout-align="center center">
+                <section>
                     <md-button class="md-icon-button" title="Novidades" aria-label="Novidades">
                         <md-icon>faces</md-icon>
                     </md-button>
                 </section>
-            </md-toolbar-filler>
+            </div>
         </div>
     </md-toolbar>
     <div style="padding-left: 8px" layout="row">
@@ -56,21 +62,25 @@
         </div>
     <md-list>
         <md-list-item class="md-2-line" ng-repeat="t in tasks">
-            <md-checkbox ng-value="t.id" ng-model="t.checked" aria-label="check"></md-checkbox>
+            <md-checkbox ng-model="t.checked" ng-click="update(t.id,!t.checked)" aria-label="check"></md-checkbox>
             <div class="md-list-item-text">
                 <h3 ng-class="{'line-through' : t.checked}">{{t.description}}</h3>
                 <p>0 de {{t.steps.length}}</p>
             </div>
+            <md-button class="md-icon-button" style="margin-top: 16px;" ng-click="remove(t.id)">
+                <md-icon>remove_circle</md-icon>
+            </md-button>
+            <md-button class="md-accent" style="margin-top: 19px;">etapas</md-button>
             <md-divider></md-divider>
         </md-list-item>
     </md-list>
     <md-list>
-        <md-list-item ng-repeat="t in tasksNew">
-            <md-icon style="color: royalblue" ng-if="t.icon === 'add'" ng-click="reset(t)">{{t.icon}}</md-icon>
-            <md-checkbox ng-if="t.icon === ''" aria-label="check"></md-checkbox>
-            <p style="color: royalblue" ng-if="t.icon === 'add'" ng-click="reset(t)">Adicionar uma tarefa</p>
-            <input id="txtDescription" type="text" style="border: none;background-color: initial;" placeholder="Adicionar uma tarefa" size="50" ng-show="t.icon === ''" ng-model="t.description">
-            <md-button ng-if="t.icon === '' && t.description" ng-click="insert(t)">Adicionar</md-button>
+        <md-list-item ng-repeat="t in tasksTemp">
+            <md-icon style="color: royalblue" ng-if="t.icon === 'add_circle'" ng-click="reset(t)">{{t.icon}}</md-icon>
+            <md-checkbox ng-if="t.icon === ''" ng-model="t.checked" aria-label="check"></md-checkbox>
+            <p style="color: royalblue" ng-if="t.icon === 'add_circle'" ng-click="reset(t)">Adicionar uma tarefa</p>
+            <input id="txtDescription" type="text" style="border: none;background-color: unset;" placeholder="Adicionar uma tarefa" size="50" ng-show="t.icon === ''" ng-model="t.description" ng-blur="resetIfEmpty(t)">
+            <md-button class="md-accent" ng-if="t.icon === '' && t.description" ng-click="insert(t.checked,t.description)">Adicionar</md-button>
             <md-divider></md-divider>
         </md-list-item>
     </md-list>
@@ -84,6 +94,6 @@
     <script type="text/javascript" src="lib/googleapis/angular_material-1.1.0/angular-material.js"></script>
     <!-- Application Libraries -->
     <script type="text/javascript" src="js/main.js"></script>
-    <script type="text/javascript" src="js/task/TaskController.js"></script>
+    <script type="text/javascript" src="js/task/taskController.js"></script>
 </body>
 </html>

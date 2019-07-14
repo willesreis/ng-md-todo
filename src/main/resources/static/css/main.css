@@ -1,6 +1,5 @@
 .search-input {
-    margin: auto 356px;
-    height: 60%;
+    width: 45%;
     border-style: none;
     border-radius: 2px;
     padding: 5px;
@@ -12,10 +11,4 @@
 }
 .line-through {
     text-decoration: line-through;
-}
-h2.md-toolbar-tools {
-    width: 120%;
-}
-h2 span {
-    width: 55px;
 }

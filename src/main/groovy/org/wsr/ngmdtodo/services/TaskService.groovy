@@ -1,12 +1,16 @@
 package org.wsr.ngmdtodo.services
 
+import java.util.logging.Logger
 import org.wsr.ngmdtodo.domain.Task
 import org.wsr.ngmdtodo.sql.SqlStatements
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.web.bind.annotation.DeleteMapping
+import org.springframework.web.bind.annotation.GetMapping
+import org.springframework.web.bind.annotation.PathVariable
+import org.springframework.web.bind.annotation.PostMapping
+import org.springframework.web.bind.annotation.PutMapping
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RestController
-import org.springframework.web.bind.annotation.GetMapping
-import org.springframework.web.bind.annotation.PostMapping
 
 @RestController
 class TaskService {
@@ -24,7 +28,9 @@ class TaskService {
     @GetMapping("/tasks")
     ArrayList findAll() {
         def list = [] as ArrayList
-        def rows = statement.selectReturns("SELECT * FROM Task")
+        def rows = statement.selectReturns(
+            "SELECT * FROM Task"
+        )
         for (r in rows) {
             list.add(new Task(id: r.id, checked: r.checked, description: r.description))
         }
@@ -32,13 +38,35 @@ class TaskService {
     }
 
     @PostMapping("/tasks")
-    void insert(@RequestBody Task task) {
+    String insert(@RequestBody Task task) {
         try {
-            statement.executeWithTransaction(
-                "INSERT INTO Task (checked, description) VALUES (${task.checked}, ${task.description})"
+            return statement.insertReturnsNewId(
+                "INSERT INTO Task (checked, description) VALUES (${task.checked}, '${task.description}')"
             )
         } catch (Exception e) {
-            Logger.getLogger(this.class).severe(e.getMessage())
+            Logger.getLogger(this.class.getName()).severe(e.getMessage())
+        }
+    }
+
+    @PutMapping("/tasks")
+    void update(@RequestBody Task task) {
+        try {
+            statement.executeWithTransaction(
+                "UPDATE Task SET checked = ${task.checked} WHERE id = ${task.id}"
+            )
+        } catch (Exception e) {
+            Logger.getLogger(this.class.getName()).severe(e.getMessage())
+        }
+    }
+
+    @DeleteMapping("/tasks/{id}")
+    void delete(@PathVariable Integer id) {
+        try {
+            statement.executeWithTransaction(
+                "DELETE FROM Task WHERE id = ${id}"
+            )
+        } catch (Exception e) {
+            Logger.getLogger(this.class.getName()).severe(e.getMessage())
         }
     }
 
