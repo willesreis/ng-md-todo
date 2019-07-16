@@ -26,7 +26,7 @@
                 </div>
             </div>
             <div layout="row" layout-align="center" flex="">
-                <input class="search-input" placeholder="Pesquisar">
+                <input class="search-input" placeholder="Pesquisar" ng-model="search">
             </div>
             <div layout="row" layout-align="center" flex="none">
                 <section>
@@ -61,7 +61,7 @@
             </section>
         </div>
     <md-list>
-        <md-list-item class="md-2-line" ng-repeat="t in tasks">
+        <md-list-item class="md-2-line" ng-repeat="t in tasks | filter:search">
             <md-checkbox ng-model="t.checked" ng-click="update(t.id,!t.checked)" aria-label="check"></md-checkbox>
             <div class="md-list-item-text">
                 <h3 ng-class="{'line-through' : t.checked}">{{t.description}}</h3>
