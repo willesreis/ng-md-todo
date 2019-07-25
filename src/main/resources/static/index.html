@@ -68,7 +68,7 @@
                 <p>0 de {{t.steps.length}}</p>
             </div>
             <md-button class="md-icon-button" style="margin-top: 16px;" ng-click="remove(t.id)">
-                <md-icon>remove_circle</md-icon>
+                <md-icon>clear</md-icon>
             </md-button>
             <md-button class="md-accent" style="margin-top: 19px;">etapas</md-button>
             <md-divider></md-divider>
@@ -76,9 +76,9 @@
     </md-list>
     <md-list>
         <md-list-item ng-repeat="t in tasksTemp">
-            <md-icon style="color: royalblue" ng-if="t.icon === 'add_circle'" ng-click="reset(t)">{{t.icon}}</md-icon>
+            <md-icon style="color: royalblue" ng-if="t.icon === 'add'" ng-click="reset(t)">{{t.icon}}</md-icon>
             <md-checkbox ng-if="t.icon === ''" ng-model="t.checked" aria-label="check"></md-checkbox>
-            <p style="color: royalblue" ng-if="t.icon === 'add_circle'" ng-click="reset(t)">Adicionar uma tarefa</p>
+            <p style="color: royalblue" ng-if="t.icon === 'add'" ng-click="reset(t)">Adicionar uma tarefa</p>
             <input id="txtDescription" type="text" style="border: none;background-color: unset;" placeholder="Adicionar uma tarefa" size="50" ng-show="t.icon === ''" ng-model="t.description" ng-blur="resetIfEmpty(t)">
             <md-button class="md-accent" ng-if="t.icon === '' && t.description" ng-click="insert(t.checked,t.description)">Adicionar</md-button>
             <md-divider></md-divider>
@@ -94,6 +94,7 @@
     <script type="text/javascript" src="lib/googleapis/angular_material-1.1.0/angular-material.js"></script>
     <!-- Application Libraries -->
     <script type="text/javascript" src="js/main.js"></script>
-    <script type="text/javascript" src="js/task/taskController.js"></script>
+    <script type="text/javascript" src="js/controller/taskController.js"></script>
+    <script type="text/javascript" src="js/controller/stepController.js"></script>
 </body>
 </html>
