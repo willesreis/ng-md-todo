@@ -12,3 +12,8 @@
 .line-through {
     text-decoration: line-through;
 }
+
+#sidenav {
+    color: #34373d;
+    background-color: rgb(240, 240, 240);
+}
