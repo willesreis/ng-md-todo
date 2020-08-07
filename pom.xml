@@ -11,7 +11,7 @@
 	<groupId>org.wsr</groupId>
 	<artifactId>ng-md-todo</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>demo</name>
+	<name>AngularJS Material To-Do</name>
 	<description>Demo project for Spring Boot</description>
 
 	<properties>
@@ -31,6 +31,11 @@
 			<groupId>org.codehaus.groovy</groupId>
 			<artifactId>groovy-sql</artifactId>
 		</dependency>
+		<dependency>
+			<groupId>org.codehaus.groovy.modules.http-builder</groupId>
+			<artifactId>http-builder</artifactId>
+			<version>0.7.1</version>
+		</dependency>
 
 		<dependency>
 			<groupId>com.h2database</groupId>
@@ -40,6 +45,18 @@
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-test</artifactId>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.spockframework</groupId>
+			<artifactId>spock-core</artifactId>
+			<version>1.0-groovy-2.4</version>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.spockframework</groupId>
+			<artifactId>spock-spring</artifactId>
+			<version>1.0-groovy-2.4</version>
 			<scope>test</scope>
 		</dependency>
 	</dependencies>
@@ -57,7 +74,6 @@
 				<executions>
 					<execution>
 						<goals>
-							<goal>addSources</goal>
 							<goal>addTestSources</goal>
 							<goal>generateStubs</goal>
 							<goal>compile</goal>
@@ -68,6 +84,16 @@
 						</goals>
 					</execution>
 				</executions>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-surefire-plugin</artifactId>
+				<version>2.20</version>
+				<configuration>
+					<includes>
+						<include>**/*Spec.java</include>
+					</includes>
+				</configuration>
 			</plugin>
 		</plugins>
 	</build>
