@@ -37,7 +37,7 @@ class StepServiceSpec extends Specification {
 		response.data.size() == 0
 	}
 
-	def "insert single step record"() {
+	def "should insert single step record"() {
 		given: "one step object with checked and description"
 		def step = [checked: false, description: "Etapa de teste 1"]
 
@@ -49,5 +49,39 @@ class StepServiceSpec extends Specification {
 
 		and: "returns the initial id"
 		response.data.text == "1"
+	}
+
+	def "should update added step record"() {
+		given: "one step object with checked and description"
+		def stepChecked = [id: 1, checked: true, description: "Etapa de teste 1"]
+
+		when: "call API PUT /steps"
+		def responsePut = client.put(path: "steps", body: stepChecked, requestContentType: 'application/json')
+
+		then: "server returns 200 code status"
+		responsePut.status == 200
+
+		when: "call API GET /steps"
+		def responseGet = client.get(path: "steps", query: [id: 1], requestContentType: 'application/json')
+
+		then: "checked field is false"
+		responseGet.data[0].checked == true
+	}
+
+	def "should remove step record recently added"() {
+		given: "id of step object to remove"
+		def idToRemove = 1
+
+		when: "call API DELETE /steps/{id}"
+		def responseDelete = client.delete(path: "steps/$idToRemove", requestContentType: 'application/json')
+
+		then: "server returns 200 code status"
+		responseDelete.status == 200
+
+		when: "call API GET /steps"
+		def responseGet = client.get(path: "steps", requestContentType: 'application/json')
+
+		then: "no records found"
+		responseGet.data.size() == 0
 	}
 }

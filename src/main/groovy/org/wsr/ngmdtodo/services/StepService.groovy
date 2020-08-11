@@ -21,7 +21,13 @@ class StepService {
     @GetMapping("/step")
     void create() {
         statement.executeWithTransaction(
-            "CREATE TABLE IF NOT EXISTS Step (id INTEGER NOT NULL IDENTITY, checked BOOL NULL, description VARCHAR(100) NULL)"
+            """
+            CREATE TABLE IF NOT EXISTS Step (
+                id INTEGER NOT NULL IDENTITY, 
+                checked BOOL NULL, 
+                description VARCHAR(100) NULL
+            )
+            """
         )
     }
 
@@ -41,7 +47,10 @@ class StepService {
     String insert(@RequestBody Step step) {
         try {
             return statement.insertReturnsNewId(
-                "INSERT INTO Step (checked, description) VALUES (${step.checked}, '${step.description}')"
+                """
+                INSERT INTO Step (checked, description) 
+                VALUES (${step.checked}, '${step.description}')
+                """
             )
         } catch (Exception e) {
             Logger.getLogger(this.class.getName()).severe(e.getMessage())
@@ -52,7 +61,11 @@ class StepService {
     void update(@RequestBody Step step) {
         try {
             statement.executeWithTransaction(
-                "UPDATE Step SET checked = ${step.checked} WHERE id = ${step.id}"
+                """
+                UPDATE Step SET 
+                checked = ${step.checked} 
+                WHERE id = ${step.id}
+                """
             )
         } catch (Exception e) {
             Logger.getLogger(this.class.getName()).severe(e.getMessage())
@@ -63,7 +76,10 @@ class StepService {
     void delete(@PathVariable Integer id) {
         try {
             statement.executeWithTransaction(
-                "DELETE FROM Step WHERE id = ${id}"
+                """
+                DELETE FROM Step 
+                WHERE id = ${id}
+                """
             )
         } catch (Exception e) {
             Logger.getLogger(this.class.getName()).severe(e.getMessage())
