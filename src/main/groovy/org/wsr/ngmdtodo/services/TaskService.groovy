@@ -18,13 +18,6 @@ class TaskService {
     @Autowired
     SqlStatements statement
 
-    @GetMapping("/task")
-    void create() {
-        statement.executeWithTransaction(
-            "CREATE TABLE IF NOT EXISTS Task (id INTEGER NOT NULL IDENTITY, checked BOOL NULL, description VARCHAR(100) NULL)"
-        )
-    }
-
     @GetMapping("/tasks")
     ArrayList findAll() {
         def list = [] as ArrayList
@@ -32,7 +25,7 @@ class TaskService {
             "SELECT * FROM Task"
         )
         for (r in rows) {
-            list.add(new Task(id: r.id, checked: r.checked, description: r.description))
+            list.add(new Task(id: r.id, checked: r.checked, toDay: r.toDay, toImportant: r.toImportant, description: r.description))
         }
         return list
     }
@@ -41,7 +34,10 @@ class TaskService {
     String insert(@RequestBody Task task) {
         try {
             return statement.insertReturnsNewId(
-                "INSERT INTO Task (checked, description) VALUES (${task.checked}, '${task.description}')"
+                """
+                INSERT INTO Task (checked, toDay, toImportant, description) 
+                VALUES (${task.checked}, ${task.toDay}, ${task.toImportant}, '${task.description}')
+                """
             )
         } catch (Exception e) {
             Logger.getLogger(this.class.getName()).severe(e.getMessage())
@@ -52,7 +48,13 @@ class TaskService {
     void update(@RequestBody Task task) {
         try {
             statement.executeWithTransaction(
-                "UPDATE Task SET checked = ${task.checked} WHERE id = ${task.id}"
+                """
+                UPDATE Task SET 
+                checked = ${task.checked} 
+                ,toDay = ${task.toDay} 
+                ,toImportant = ${task.toImportant} 
+                WHERE id = ${task.id}
+                """
             )
         } catch (Exception e) {
             Logger.getLogger(this.class.getName()).severe(e.getMessage())
@@ -63,7 +65,10 @@ class TaskService {
     void delete(@PathVariable Integer id) {
         try {
             statement.executeWithTransaction(
-                "DELETE FROM Task WHERE id = ${id}"
+                """
+                DELETE FROM Task 
+                WHERE id = ${id}
+                """
             )
         } catch (Exception e) {
             Logger.getLogger(this.class.getName()).severe(e.getMessage())

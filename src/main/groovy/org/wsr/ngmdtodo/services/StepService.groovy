@@ -18,19 +18,6 @@ class StepService {
     @Autowired
     SqlStatements statement
 
-    @GetMapping("/step")
-    void create() {
-        statement.executeWithTransaction(
-            """
-            CREATE TABLE IF NOT EXISTS Step (
-                id INTEGER NOT NULL IDENTITY, 
-                checked BOOL NULL, 
-                description VARCHAR(100) NULL
-            )
-            """
-        )
-    }
-
     @GetMapping("/steps")
     ArrayList findAll() {
         def list = [] as ArrayList

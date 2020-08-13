@@ -18,14 +18,6 @@ class StepServiceSpec extends Specification {
 	@Shared
 	def client = new RESTClient("http://localhost:8080/ng-md-todo/")
 
-	def "should create a table with name step"() {
-		when: "call API GET /step"
-		def response = client.get(path: "step")
-		
-		then: "server returns 200 code status"
-		response.status == 200
-	}
-
 	def "should return a empty list of table recently created"() {
 		when: "call API GET /steps"
 		def response = client.get(path: "steps")
