@@ -13,7 +13,44 @@
     text-decoration: line-through;
 }
 
-#sidenav {
+.md-button.menu {
+    width: 100%;
+    margin: 6px 0;
+    text-align: left;
+}
+
+.md-button > span.menu {
+    margin-left: 10px;
+    text-transform: initial;
+}
+
+.scrollable {
+    overflow: auto;
+    overflow-x: hidden;
+}
+
+.detail-footer {
+    position: absolute;
+    width: 100%;
+    bottom: -16px;
+    background-color: rgb(240, 240, 240);
+}
+
+md-list-item.md-clickable {
+    padding: 0;
+}
+
+md-list-item.menu {
+    padding: 0 5px;
+}
+
+#sidenav-left, #sidenav-right {
     color: #34373d;
     background-color: rgb(240, 240, 240);
+}
+
+input.insert {
+    outline: none;
+    border-style: none;
+    background-color: inherit;
 }

@@ -5,12 +5,14 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <title>Tarefas - To-Do</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" type="text/css" media="screen" href="lib/googleapis/fonts/roboto.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700,400italic">
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
-    <link rel="stylesheet" type="text/css" media="screen" href="lib/googleapis/angular_material-1.1.0/angular-material.css">
+    <!-- Angular Material CSS now available via Google CDN; version 1.2.0 used here -->
+    <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/angular_material/1.2.0/angular-material.min.css">
+    <!-- Application stylesheet -->
     <link rel="stylesheet" type="text/css" media="screen" href="css/main.css">
 </head>
-<body ng-app="app" ng-cloak="">
+<body ng-app="app" ng-controller="TaskController" ng-cloak="">
   <md-toolbar>
     <div layout="row" layout-align="space-between center">
       <div layout="row" flex="none">
@@ -28,7 +30,7 @@
       <div layout="row" layout-align="center" flex="">
         <input class="search-input" placeholder="Pesquisar" ng-model="search">
       </div>
-      <div layout="row" layout-align="center" flex="none">
+      <div ng-controller="MenuController" layout="row" layout-align="center" flex="none">
         <section>
           <md-button class="md-icon-button" title="Configurações" aria-label="Configurações">
             <md-icon>settings</md-icon>
@@ -53,92 +55,139 @@
     </div>
   </md-toolbar>
   <section layout="row" flex="" style="height: 100%;">
-    <md-content id="sidenav" ng-controller="MenuController" layout="column" style="width: 50px;">
-      <md-button class="md-icon-button" style="margin: 16px 6px;" ng-click="toggleSidenav()">
+    <md-content id="sidenav-left" style="width: 290px;">
+      <md-button class="md-icon-button" style="margin: 16px 5px;" ng-click="toggleSidenav()">
         <md-icon>menu</md-icon>
       </md-button>
       <md-list>
-        <md-list-item class="md-1-line">
-          <md-button class="md-icon-button">
+        <md-list-item class="menu">
+          <md-button class="menu" ng-click="menuMyDay(tasks)">
             <md-icon>wb_sunny</md-icon>
+            <span class="menu">Meu Dia</span>
           </md-button>
-          <span ng-hide="sidenavClosed">Meu Dia</span>
+          <span class="md-secondary" style="margin-right: 5px;">{{(tasks | filter : {toDay: true}).length}}</span>
         </md-list-item>
-        <md-list-item class="md-1-line">
-          <md-button class="md-icon-button">
+        <md-list-item class="menu">
+          <md-button class="menu" ng-click="menuImportant(tasks)">
             <md-icon>star</md-icon>
+            <span class="menu">Importante</span>
           </md-button>
-          <span ng-hide="sidenavClosed">Importante</span>
+          <span class="md-secondary" style="margin-right: 5px;">{{(tasks | filter : {toImportant: true}).length}}</span>
         </md-list-item>
-        <md-list-item class="md-1-line">
-          <md-button class="md-icon-button">
+        <md-list-item class="menu">
+          <md-button class="menu" ng-click="menuPlanned()">
             <md-icon>today</md-icon>
+            <span class="menu">Planejado</span>
           </md-button>
-          <span ng-hide="sidenavClosed">Planejado</span>
         </md-list-item>
-        <md-list-item class="md-1-line">
-          <md-button class="md-icon-button">
+        <md-list-item class="menu">
+          <md-button class="menu" ng-click="menuIssuesToYou()">
             <md-icon>person</md-icon>
+            <span class="menu">Atribuída a você</span>
           </md-button>
-          <span ng-hide="sidenavClosed">Atribuída a você</span>
         </md-list-item>
-        <md-list-item class="md-1-line">
-          <md-button class="md-icon-button">
+        <md-list-item class="menu">
+          <md-button class="menu" ng-click="menuMailMarked()">
             <md-icon>flag</md-icon>
+            <span class="menu">Email sinalizado</span>
           </md-button>
-          <span ng-hide="sidenavClosed">Email sinalizado</span>
         </md-list-item>
-        <md-list-item class="md-1-line">
-          <md-button class="md-icon-button">
+        <md-list-item class="menu">
+          <md-button class="menu" ng-click="menuTasks()">
             <md-icon>home</md-icon>
+            <span class="menu">Tarefas</span>
           </md-button>
-          <span ng-hide="sidenavClosed">Tarefas</span>
+          <span class="md-secondary" style="margin-right: 5px;">{{tasks.length}}</span>
         </md-list-item>
       </md-list>
     </md-content>
-    <md-content ng-controller="TaskController" layout-padding="" flex="">
+    <md-content layout-padding="" flex="">
       <div style="padding-left: 8px" layout="row">
-        <h2 style="color: royalblue">Tarefas</h2>
+        <h2 style="color: royalblue">{{title}}</h2>
         <section layout="column" layout-align="center center">
           <md-button class="md-icon-button" aria-label="Opções">
             <md-icon>more_horiz</md-icon>
           </md-button>
         </section>
       </div>
+      <span ng-if="subTitle">{{subTitle}}</span>
       <md-list>
-        <md-list-item class="md-2-line" ng-repeat="t in tasks | filter:search">
-          <md-checkbox ng-model="t.checked" aria-label="check"></md-checkbox>
+        <md-list-item class="md-2-line md-no-proxy" ng-repeat="t in tasks | filter:search" ng-click="showSteps(t)">
+          <md-checkbox ng-model="t.checked" ng-change="update(t)" aria-label="check"></md-checkbox>
           <div class="md-list-item-text">
             <h3 ng-class="{'line-through' : t.checked}">{{t.description}}</h3>
             <p>0 de {{t.steps.length}}</p>
           </div>
-          <md-button class="md-icon-button" style="margin-top: 16px;" ng-click="remove(t.id)">
+          <md-button class="md-icon-button" title="Remover" ng-click="remove(t.id)">
             <md-icon>clear</md-icon>
           </md-button>
-          <md-button class="md-accent" style="margin-top: 19px;">etapas</md-button>
+          <md-button class="md-icon-button" title="Marque a tarefa como importante" aria-label="importante" ng-click="t.toImportant=!t.toImportant;update(t)">
+            <md-icon ng-if="t.toImportant">star</md-icon>
+            <md-icon ng-if="!t.toImportant">star_border</md-icon>
+          </md-button>
           <md-divider></md-divider>
         </md-list-item>
       </md-list>
       <md-list>
         <md-list-item ng-repeat="t in tasksTemp">
-          <md-icon style="color: royalblue" ng-if="t.icon === 'add'" ng-click="reset(t)">{{t.icon}}</md-icon>
-          <md-checkbox ng-if="t.icon === ''" ng-model="t.checked" aria-label="check"></md-checkbox>
-          <p style="color: royalblue" ng-if="t.icon === 'add'" ng-click="reset(t)">Adicionar uma tarefa</p>
-          <input id="txtDescription" type="text" style="border: none;background-color: unset;" placeholder="Adicionar uma tarefa" size="50" ng-show="t.icon === ''" ng-model="t.description" ng-blur="resetIfEmpty(t)">
-          <md-button class="md-accent" ng-if="t.icon === '' && t.description" ng-click="insert(t.checked,t.description)">Adicionar</md-button>
+          <md-icon style="color: royalblue" ng-if="addAllowed(t)" ng-click="reset(t)">{{t.icon}}</md-icon>
+          <md-checkbox ng-if="addNotAllowed(t)" ng-model="t.checked" aria-label="check"></md-checkbox>
+          <p style="color: royalblue" ng-if="addAllowed(t)" ng-click="reset(t)">Adicionar uma tarefa</p>
+          <input type="text" class="insert" placeholder="Adicionar uma tarefa" size="50" ng-show="addNotAllowed(t)" ng-model="t.description" ng-blur="resetIfEmpty(t)">
+          <md-button class="md-accent md-secondary" ng-if="addNotAllowedAndHasDescription(t)" ng-click="insert(t)">Adicionar</md-button>
           <md-divider></md-divider>
         </md-list-item>
       </md-list>
     </md-content>
+    <md-content id="sidenav-right" ng-controller="StepController" style="width: 0px;">
+      <div class="scrollable" layout-padding="">
+        <div style="background-color: white;margin: 5px;">
+          <md-checkbox ng-model="taskSelected.checked" aria-label="check">{{taskSelected.description}}</md-checkbox>
+          <md-button class="md-icon-button" ng-click="" style="margin-top: 5px;">
+            <md-icon>star_border</md-icon>
+          </md-button>
+          <md-list>
+            <md-list-item ng-repeat="s in taskSelected.steps">
+              <p>{{s.description}}</p>
+            </md-list-item>
+          </md-list>
+          <md-list ng-hide="taskSelected.checked">
+            <md-list-item>
+              <md-icon style="color: royalblue">add</md-icon>
+              <p style="color: royalblue">Próxima etapa</p>
+            </md-list-item>
+          </md-list>
+        </div>
+        <div ng-click="" style="background-color: white;margin: 10px 5px;">
+          <md-icon>wb_sunny</md-icon>
+          <span>Adicionar a Meu Dia</span>
+        </div>
+        <div style="background-color: white;margin: 10px 5px;">
+          <md-icon>notifications</md-icon>
+          <span>Lembrar-me</span>
+          <md-divider style="margin: 10px 0;"></md-divider>
+          <md-icon>today</md-icon>
+          <span>Adicionar data de conclusão</span>
+          <md-divider style="margin: 10px 0;"></md-divider>
+          <md-icon>update</md-icon>
+          <span>Repetir</span>
+        </div>
+      </div>
+      <div class="detail-footer">
+        <md-button class="md-icon-button" ng-click="hideSteps()">
+          <md-icon>last_page</md-icon>
+        </md-button>
+      </div>
+    </md-content>
   </section>
 
-  <!-- Angular Material requires Angular.js Libraries -->
-  <script type="text/javascript" src="lib/googleapis/angularjs-1.5.5/angular.js"></script>
-  <script type="text/javascript" src="lib/googleapis/angularjs-1.5.5/angular-animate.js"></script>
-  <script type="text/javascript" src="lib/googleapis/angularjs-1.5.5/angular-aria.js"></script>
-  <script type="text/javascript" src="lib/googleapis/angularjs-1.5.5/angular-messages.js"></script>
-  <!-- Angular Material Library -->
-  <script type="text/javascript" src="lib/googleapis/angular_material-1.1.0/angular-material.js"></script>
+  <!-- Angular Material Dependencies -->
+  <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.0/angular.min.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.0/angular-animate.min.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.0/angular-aria.min.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.0/angular-messages.min.js"></script>
+  <!-- Angular Material Javascript now available via Google CDN; version 1.2.0 used here -->
+  <script src="https://ajax.googleapis.com/ajax/libs/angular_material/1.2.0/angular-material.min.js"></script>
   <!-- Application Libraries -->
   <script type="text/javascript" src="js/main.js"></script>
   <script type="text/javascript" src="js/controller/menuController.js"></script>

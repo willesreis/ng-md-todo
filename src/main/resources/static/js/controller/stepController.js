@@ -5,34 +5,21 @@
             var testData = [{id: 1, checked: false, description: undefined}];
             $scope.steps = [];
             $scope.stepTemp = [{id: 0, checked: false, description: undefined}];
-            function create() {
-                $http.get('step')
-                    .then(function() {
-                        console.log('Dados criados.');
-                        list();
-                    }, function(response) {
-                        console.log(response.status, response.statusText);
-                    }
-                );
-            }
-            create();
             function list() {
                 $http.get('steps')
-                    .then(function(response) {
-                        $scope.steps = response.data;
-                    }, function(response) {
-                        console.log(response.status, response.statusText);
-                    }
+                .then(function(response) {
+                    $scope.steps = response.data;
+                }, function(response) {
+                    console.log(response.status, response.statusText);
+                }
                 );
             }
             $scope.reset = function(step) {
                 step.description = undefined;
-                window.setTimeout(() => {
-                    document.getElementById('txtDescription').focus();
-                }, 500);
             };
             $scope.resetIfEmpty = function(step) {
                 if (angular.isUndefined(step.description) || step.description.length === 0) {
+                    step.icon = 'add';
                 }
             };
             $scope.insert = function(checked, description) {
@@ -44,8 +31,6 @@
                         console.log(response.status, response.statusText);
                     }
                 );
-                $scope.stepTemp = [];
-                $scope.stepTemp.push({id: 0, checked: false, description: undefined});
             };
             $scope.update = function(id, checked) {
                 $http.put('steps', {id: id, checked: checked})
