@@ -59,7 +59,7 @@
                     task.icon = 'add';
                 }
             };
-            $scope.insert = function(task) {
+            $scope.insertTask = function(task) {
                 $http.post('tasks', {checked: task.checked, toDay: task.toDay, toImportant: task.toImportant, description: task.description})
                     .then(function(response) {
                         console.log(response.data);
@@ -71,7 +71,7 @@
                 $scope.tasksTemp = [];
                 $scope.tasksTemp.push(angular.copy(initialTask));
             };
-            $scope.update = function(task) {
+            $scope.updateTask = function(task) {
                 $http.put('tasks', {id: task.id, checked: task.checked, toDay: task.toDay, toImportant: task.toImportant})
                     .then(function(response) {
                         console.log(response.data);
@@ -81,10 +81,10 @@
                     }
                 );
             };
-            $scope.remove = function(id) {
+            $scope.removeTask = function(id) {
                 $http.delete('tasks/' + id)
                     .then(function(response) {
-                        console.log(response);
+                        $scope.hideSteps();
                         list();
                     }, function(response) {
                         console.log(response.status, response.statusText);

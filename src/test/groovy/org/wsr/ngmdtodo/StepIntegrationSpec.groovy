@@ -13,7 +13,7 @@ import spock.lang.Specification
 )
 @ActiveProfiles(value = "test")
 @ContextConfiguration
-class StepServiceSpec extends Specification {
+class StepIntegrationSpec extends Specification {
 
 	@Shared
 	def client = new RESTClient("http://localhost:8080/ng-md-todo/")
@@ -56,7 +56,7 @@ class StepServiceSpec extends Specification {
 		when: "call API GET /steps"
 		def responseGet = client.get(path: "steps", query: [id: 1], requestContentType: 'application/json')
 
-		then: "checked field is false"
+		then: "checked field is true"
 		responseGet.data[0].checked == true
 	}
 

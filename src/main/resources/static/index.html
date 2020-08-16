@@ -5,6 +5,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <title>Tarefas - To-Do</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700,400italic">
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
     <!-- Angular Material CSS now available via Google CDN; version 1.2.0 used here -->
@@ -113,15 +114,12 @@
       <span ng-if="subTitle">{{subTitle}}</span>
       <md-list>
         <md-list-item class="md-2-line md-no-proxy" ng-repeat="t in tasks | filter:search" ng-click="showSteps(t)">
-          <md-checkbox ng-model="t.checked" ng-change="update(t)" aria-label="check"></md-checkbox>
+          <md-checkbox ng-model="t.checked" ng-change="updateTask(t)" aria-label="check"></md-checkbox>
           <div class="md-list-item-text">
             <h3 ng-class="{'line-through' : t.checked}">{{t.description}}</h3>
             <p>0 de {{t.steps.length}}</p>
           </div>
-          <md-button class="md-icon-button" title="Remover" ng-click="remove(t.id)">
-            <md-icon>clear</md-icon>
-          </md-button>
-          <md-button class="md-icon-button" title="Marque a tarefa como importante" aria-label="importante" ng-click="t.toImportant=!t.toImportant;update(t)">
+          <md-button class="md-icon-button" title="Marque a tarefa como importante" aria-label="importante" ng-click="t.toImportant=!t.toImportant;updateTask(t)">
             <md-icon ng-if="t.toImportant">star</md-icon>
             <md-icon ng-if="!t.toImportant">star_border</md-icon>
           </md-button>
@@ -134,7 +132,7 @@
           <md-checkbox ng-if="addNotAllowed(t)" ng-model="t.checked" aria-label="check"></md-checkbox>
           <p style="color: royalblue" ng-if="addAllowed(t)" ng-click="reset(t)">Adicionar uma tarefa</p>
           <input type="text" class="insert" placeholder="Adicionar uma tarefa" size="50" ng-show="addNotAllowed(t)" ng-model="t.description" ng-blur="resetIfEmpty(t)">
-          <md-button class="md-accent md-secondary" ng-if="addNotAllowedAndHasDescription(t)" ng-click="insert(t)">Adicionar</md-button>
+          <md-button class="md-accent md-secondary" ng-if="addNotAllowedAndHasDescription(t)" ng-click="insertTask(t)">Adicionar</md-button>
           <md-divider></md-divider>
         </md-list-item>
       </md-list>
@@ -144,7 +142,8 @@
         <div style="background-color: white;margin: 5px;">
           <md-checkbox ng-model="taskSelected.checked" aria-label="check">{{taskSelected.description}}</md-checkbox>
           <md-button class="md-icon-button" ng-click="" style="margin-top: 5px;">
-            <md-icon>star_border</md-icon>
+            <md-icon ng-if="taskSelected.toImportant">star</md-icon>
+            <md-icon ng-if="!taskSelected.toImportant">star_border</md-icon>
           </md-button>
           <md-list>
             <md-list-item ng-repeat="s in taskSelected.steps">
@@ -176,6 +175,9 @@
       <div class="detail-footer">
         <md-button class="md-icon-button" ng-click="hideSteps()">
           <md-icon>last_page</md-icon>
+        </md-button>
+        <md-button class="md-icon-button" title="Remover" style="margin-left: auto;" ng-click="removeTask(taskSelected.id)">
+          <md-icon>delete</md-icon>
         </md-button>
       </div>
     </md-content>

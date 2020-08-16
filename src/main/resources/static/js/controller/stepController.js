@@ -22,7 +22,7 @@
                     step.icon = 'add';
                 }
             };
-            $scope.insert = function(checked, description) {
+            $scope.insertStep = function(checked, description) {
                 $http.post('steps', {checked: checked, description: description})
                     .then(function(response) {
                         console.log('Etapa ' + response.data + ' inserida');
@@ -32,7 +32,7 @@
                     }
                 );
             };
-            $scope.update = function(id, checked) {
+            $scope.updateStep = function(id, checked) {
                 $http.put('steps', {id: id, checked: checked})
                     .then(function() {
                         console.log('Etapa ' + id + ' atualizada');
@@ -42,7 +42,7 @@
                     }
                 );
             };
-            $scope.remove = function(id) {
+            $scope.removeStep = function(id) {
                 $http.delete('steps/' + id)
                     .then(function() {
                         console.log('Etapa ' + id + ' removida');
