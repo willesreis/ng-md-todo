@@ -29,6 +29,16 @@
     overflow-x: hidden;
 }
 
+.step-box-top {
+    background-color: white;
+    margin: 5px;
+}
+
+.step-boxes {
+    background-color: white;
+    margin: 10px 5px;
+}
+
 .detail-footer {
     position: absolute;
     width: 100%;

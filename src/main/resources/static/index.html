@@ -139,7 +139,7 @@
     </md-content>
     <md-content id="sidenav-right" ng-controller="StepController" style="width: 0px;">
       <div class="scrollable" layout-padding="">
-        <div style="background-color: white;margin: 5px;">
+        <div class="step-box-top">
           <md-checkbox ng-model="taskSelected.checked" aria-label="check">{{taskSelected.description}}</md-checkbox>
           <md-button class="md-icon-button" ng-click="" style="margin-top: 5px;">
             <md-icon ng-if="taskSelected.toImportant">star</md-icon>
@@ -157,11 +157,15 @@
             </md-list-item>
           </md-list>
         </div>
-        <div ng-click="" style="background-color: white;margin: 10px 5px;">
-          <md-icon>wb_sunny</md-icon>
-          <span>Adicionar a Meu Dia</span>
+        <div class="step-boxes">
+          <md-icon style="padding: 8px 0">wb_sunny</md-icon>
+          <span ng-if="!taskSelected.toDay" ng-click="taskSelected.toDay=true;updateTask(taskSelected);">Adicionar a Meu Dia</span>
+          <span ng-if="taskSelected.toDay" style="color: royalblue;">Adicionada a Meu Dia</span>
+          <md-button class="md-icon-button" ng-click="taskSelected.toDay=false;updateTask(taskSelected);" ng-if="taskSelected.toDay">
+            <md-icon style="color: royalblue;">clear</md-icon>
+          </md-button>
         </div>
-        <div style="background-color: white;margin: 10px 5px;">
+        <div class="step-boxes">
           <md-icon>notifications</md-icon>
           <span>Lembrar-me</span>
           <md-divider style="margin: 10px 0;"></md-divider>
