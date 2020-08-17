@@ -113,6 +113,16 @@
       </div>
       <span ng-if="subTitle">{{subTitle}}</span>
       <md-list>
+        <md-list-item ng-repeat="t in tasksTemp">
+          <md-icon style="color: royalblue" ng-if="addAllowed(t)" ng-click="reset(t)">{{t.icon}}</md-icon>
+          <md-checkbox ng-if="addNotAllowed(t)" ng-model="t.checked" aria-label="check"></md-checkbox>
+          <p style="color: royalblue" ng-if="addAllowed(t)" ng-click="reset(t)">Adicionar uma tarefa</p>
+          <input type="text" class="insert" placeholder="Adicionar uma tarefa" size="50" ng-show="addNotAllowed(t)" ng-model="t.description" ng-blur="resetIfEmpty(t)">
+          <md-button class="md-accent md-secondary" ng-if="addNotAllowedAndHasDescription(t)" ng-click="insertTask(t)">Adicionar</md-button>
+          <md-divider></md-divider>
+        </md-list-item>
+      </md-list>
+      <md-list>
         <md-list-item class="md-2-line md-no-proxy" ng-repeat="t in tasks | filter:search" ng-click="showSteps(t)">
           <md-checkbox ng-model="t.checked" ng-change="updateTask(t)" aria-label="check"></md-checkbox>
           <div class="md-list-item-text">
@@ -123,16 +133,6 @@
             <md-icon ng-if="t.toImportant">star</md-icon>
             <md-icon ng-if="!t.toImportant">star_border</md-icon>
           </md-button>
-          <md-divider></md-divider>
-        </md-list-item>
-      </md-list>
-      <md-list>
-        <md-list-item ng-repeat="t in tasksTemp">
-          <md-icon style="color: royalblue" ng-if="addAllowed(t)" ng-click="reset(t)">{{t.icon}}</md-icon>
-          <md-checkbox ng-if="addNotAllowed(t)" ng-model="t.checked" aria-label="check"></md-checkbox>
-          <p style="color: royalblue" ng-if="addAllowed(t)" ng-click="reset(t)">Adicionar uma tarefa</p>
-          <input type="text" class="insert" placeholder="Adicionar uma tarefa" size="50" ng-show="addNotAllowed(t)" ng-model="t.description" ng-blur="resetIfEmpty(t)">
-          <md-button class="md-accent md-secondary" ng-if="addNotAllowedAndHasDescription(t)" ng-click="insertTask(t)">Adicionar</md-button>
           <md-divider></md-divider>
         </md-list-item>
       </md-list>
